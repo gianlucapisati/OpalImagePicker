@@ -191,7 +191,7 @@ open class OpalImagePickerRootViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(PickerCell.self, forCellWithReuseIdentifier: "PickerCell")
+        collectionView.register(UINib(nibName: "PickerCell", bundle: nil), forCellWithReuseIdentifier: "PickerCell")
     }
 
     
@@ -349,13 +349,11 @@ extension OpalImagePickerRootViewController: UICollectionViewDelegate {
     ///   - collectionView: the `UICollectionView`
     ///   - indexPath: the `IndexPath`
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ImagePickerCollectionViewCell,
+        guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell,
             let image = cell.imageView?.image else { return }
         set(image: image, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
         let index = selectedIndexes.index(of: indexPath)
-        let number = index != nil ? index!+1 : nil
-        cell.number = number
-        cell.setup(number: number)
+        cell.setup(index: index)
     }
     
     
@@ -365,14 +363,12 @@ extension OpalImagePickerRootViewController: UICollectionViewDelegate {
     ///   - collectionView: the `UICollectionView`
     ///   - indexPath: the `IndexPath`
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ImagePickerCollectionViewCell else {return}
+        guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell else {return}
         set(image: nil, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
         let index = selectedIndexes.index(of: indexPath)
-        let number = index != nil ? index!+1 : nil
-        cell.number = number
-        cell.setup(number: number)
+        cell.setup(index: index)
         
-        collectionView.reloadItems(at: selectedIndexes)
+        collectionView.reloadData()
         
     }
 }
@@ -419,6 +415,12 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PickerCell", for: indexPath) as? PickerCell else { return UICollectionViewCell() }
         if let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) {
             let index = selectedIndexes.index(of: indexPath)
+            if(cell.url == nil){
+                cell.url = url
+            }
+            if(cell.indexPath == nil){
+                cell.indexPath = indexPath
+            }
             cell.setup(index: index)
         }
         else {

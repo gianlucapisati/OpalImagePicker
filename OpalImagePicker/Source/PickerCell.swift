@@ -30,9 +30,11 @@ class PickerCell: UICollectionViewCell {
     func setup(index: Int?){
         if(index != nil){
             numberLabel.text = "\(index!+1)"
-        }
-        
-        activityIndicator.startAnimating()
+            overlayImageView.image = UIImage(named:"circle-full")
+        }else{
+            numberLabel.text = ""
+            overlayImageView.image = UIImage(named:"circle-empty")
+        }        
     }
     fileprivate var urlDataTask: URLSessionTask?
     var cache: NSCache<NSIndexPath, NSData>?
