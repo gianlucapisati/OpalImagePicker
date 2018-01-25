@@ -9,6 +9,12 @@
 import UIKit
 import Photos
 
+public enum ModalityType{
+    case select
+    case reorder
+    case delete
+}
+
 /// Image Picker Controller Delegate. Notifies when images are selected or image picker is cancelled.
 @objc public protocol OpalImagePickerControllerDelegate: class {
     
@@ -66,6 +72,14 @@ import Photos
 /// Image Picker Controller. Displays images from the Photo Library. Must check Photo Library permissions before attempting to display this controller.
 open class OpalImagePickerController: UINavigationController {
     
+    
+    
+    open var pickerMode:ModalityType? {
+        didSet {
+            let rootVC = viewControllers.first as? OpalImagePickerRootViewController
+            rootVC?.pickerMode = pickerMode
+        }
+    }
     /// Image Picker Delegate. Notifies when images are selected or image picker is cancelled.
     open weak var imagePickerDelegate: OpalImagePickerControllerDelegate? {
         didSet {
@@ -138,15 +152,6 @@ open class OpalImagePickerController: UINavigationController {
         didSet {
             let rootVC = viewControllers.first as? OpalImagePickerRootViewController
             rootVC?.toolbar.barTintColor = externalToolbarBarTintColor
-        }
-    }
-    
-    /// External `UIToolbar` and `UISegmentedControl` tint color.
-    open var externalToolbarTintColor: UIColor? {
-        didSet {
-            let rootVC = viewControllers.first as? OpalImagePickerRootViewController
-            rootVC?.toolbar.tintColor = externalToolbarTintColor
-            rootVC?.tabSegmentedControl.tintColor = externalToolbarTintColor
         }
     }
     

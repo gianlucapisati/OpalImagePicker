@@ -20,6 +20,8 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    var number: Int?
+    
     var size: CGSize? {
         didSet {
             loadPhotoAssetIfNeeded()
@@ -52,31 +54,13 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    open var selectionImage: UIImage? {
-        didSet {
-            overlayImageView?.image = selectionImage?.withRenderingMode(.alwaysTemplate)
-        }
-    }
-    
-    override var isSelected: Bool {
-        set {
-            setSelected(newValue, animated: true)
-        }
-        get {
-            return super.isSelected
-        }
-    }
-    
-    func setSelected(_ isSelected: Bool, animated: Bool) {
-        super.isSelected = isSelected
-        updateSelected(animated)
-    }
-    
+  
     weak var imageView: UIImageView?
     weak var activityIndicator: UIActivityIndicatorView?
     
     weak var overlayView: UIView?
     weak var overlayImageView: UIImageView?
+    weak var numberLabel: UILabel?
     
     fileprivate var imageRequestID: PHImageRequestID?
     fileprivate var urlDataTask: URLSessionTask?
@@ -98,13 +82,36 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(imageView)
         self.imageView = imageView
         
+        let overlayImageView = UIImageView(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
+        overlayImageView.translatesAutoresizingMaskIntoConstraints = false
+        overlayImageView.image = UIImage(named: "circle-empty")
+        contentView.addSubview(overlayImageView)
+        self.overlayImageView = overlayImageView
+        
+        let numberLabel = UILabel(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
+        numberLabel.translatesAutoresizingMaskIntoConstraints = false
+        numberLabel.textColor = .white
+        numberLabel.textAlignment = .center
+        contentView.addSubview(numberLabel)
+        self.numberLabel = numberLabel
+        
         NSLayoutConstraint.activate([
             contentView.leftAnchor.constraint(equalTo: imageView.leftAnchor),
             contentView.rightAnchor.constraint(equalTo: imageView.rightAnchor),
             contentView.topAnchor.constraint(equalTo: imageView.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
             contentView.centerXAnchor.constraint(equalTo: activityIndicator.centerXAnchor),
-            contentView.centerYAnchor.constraint(equalTo: activityIndicator.centerYAnchor)
+            contentView.centerYAnchor.constraint(equalTo: activityIndicator.centerYAnchor),
+            
+            overlayImageView.widthAnchor.constraint(equalToConstant: 30),
+            overlayImageView.heightAnchor.constraint(equalToConstant: 30),
+            contentView.rightAnchor.constraint(equalTo: overlayImageView.rightAnchor),
+            contentView.bottomAnchor.constraint(equalTo: overlayImageView.bottomAnchor),
+            
+            numberLabel.widthAnchor.constraint(equalToConstant: 30),
+            numberLabel.heightAnchor.constraint(equalToConstant: 30),
+            contentView.rightAnchor.constraint(equalTo: numberLabel.rightAnchor),
+            contentView.bottomAnchor.constraint(equalTo: numberLabel.bottomAnchor)
             ])
         layoutIfNeeded()
     }
@@ -123,9 +130,6 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         guard let imageRequestID = self.imageRequestID else { return }
         manager.cancelImageRequest(imageRequestID)
         self.imageRequestID = nil
-        
-        //Remove selection
-        setSelected(false, animated: false)
     }
     
     fileprivate func loadPhotoAssetIfNeeded() {
@@ -171,7 +175,10 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         activityIndicator?.startAnimating()
         urlDataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             guard indexPath == self?.indexPath else { return }
-            self?.activityIndicator?.stopAnimating()
+            
+            DispatchQueue.main.async { // Correct
+                self?.activityIndicator?.stopAnimating()
+            }
             
             guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
                 //let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
@@ -192,67 +199,76 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         urlDataTask?.resume()
     }
     
-    fileprivate func updateSelected(_ animated: Bool) {
-        if isSelected {
-            addOverlay(animated)
-        }
-        else {
-            removeOverlay(animated)
-        }
-    }
-    
     fileprivate func addOverlay(_ animated: Bool) {
-        guard self.overlayView == nil && self.overlayImageView == nil else { return }
+        guard self.overlayImageView != nil else { return }
         
-        let overlayView = UIView(frame: frame)
-        overlayView.translatesAutoresizingMaskIntoConstraints = false
-        overlayView.backgroundColor = selectionTintColor
-        contentView.addSubview(overlayView)
-        self.overlayView = overlayView
-        
-        let overlayImageView = UIImageView(frame: frame)
+        self.overlayImageView?.removeFromSuperview()
+
+        let overlayImageView = UIImageView(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
         overlayImageView.translatesAutoresizingMaskIntoConstraints = false
-        overlayImageView.contentMode = .center
-        overlayImageView.image = selectionImage ?? UIImage(named: "checkmark", in: Bundle.podBundle(forClass: type(of: self).self), compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
-        overlayImageView.tintColor = selectionImageTintColor
-        overlayImageView.alpha = 0
+        overlayImageView.image = UIImage(named: "circle-full")
         contentView.addSubview(overlayImageView)
         self.overlayImageView = overlayImageView
         
+        let numberLabel = UILabel(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
+        numberLabel.translatesAutoresizingMaskIntoConstraints = false
+        numberLabel.textColor = .white
+        numberLabel.textAlignment = .center
+        if number != nil{
+            numberLabel.text = "\(number!)"
+        }else{
+            numberLabel.text = ""
+        }
+        
+        contentView.addSubview(numberLabel)
+        self.numberLabel = numberLabel
+        
         NSLayoutConstraint.activate([
-            contentView.leftAnchor.constraint(equalTo: overlayView.leftAnchor),
-            contentView.rightAnchor.constraint(equalTo: overlayView.rightAnchor),
-            contentView.topAnchor.constraint(equalTo: overlayView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: overlayView.bottomAnchor),
-            contentView.leftAnchor.constraint(equalTo: overlayImageView.leftAnchor),
+            overlayImageView.widthAnchor.constraint(equalToConstant: 30),
+            overlayImageView.heightAnchor.constraint(equalToConstant: 30),
             contentView.rightAnchor.constraint(equalTo: overlayImageView.rightAnchor),
-            contentView.topAnchor.constraint(equalTo: overlayImageView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: overlayImageView.bottomAnchor)
+            contentView.bottomAnchor.constraint(equalTo: overlayImageView.bottomAnchor),
+            numberLabel.widthAnchor.constraint(equalToConstant: 30),
+            numberLabel.heightAnchor.constraint(equalToConstant: 30),
+            contentView.rightAnchor.constraint(equalTo: numberLabel.rightAnchor),
+            contentView.bottomAnchor.constraint(equalTo: numberLabel.bottomAnchor)
             ])
         layoutIfNeeded()
         
         let duration = animated ? 0.2 : 0.0
         UIView.animate(withDuration: duration, animations: {
-            overlayView.alpha = 0.7
             overlayImageView.alpha = 1
         })
     }
     
     fileprivate func removeOverlay(_ animated: Bool) {
-        guard let overlayView = self.overlayView,
-            let overlayImageView = self.overlayImageView else {
-                self.overlayView?.removeFromSuperview()
+        if(self.overlayImageView != nil && self.numberLabel != nil){
                 self.overlayImageView?.removeFromSuperview()
+                self.numberLabel?.removeFromSuperview()
                 return
         }
         
-        let duration = animated ? 0.2 : 0.0
-        UIView.animate(withDuration: duration, animations: {
-            overlayView.alpha = 0
-            overlayImageView.alpha = 0
-        }, completion: { (_) in
-            overlayView.removeFromSuperview()
-            overlayImageView.removeFromSuperview()
-        })
+        let overlayImageView = UIImageView(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
+        overlayImageView.translatesAutoresizingMaskIntoConstraints = false
+        overlayImageView.image = UIImage(named: "circle-empty")
+        contentView.addSubview(overlayImageView)
+        self.overlayImageView = overlayImageView
+        
+        NSLayoutConstraint.activate([
+            overlayImageView.widthAnchor.constraint(equalToConstant: 30),
+            overlayImageView.heightAnchor.constraint(equalToConstant: 30),
+            contentView.rightAnchor.constraint(equalTo: overlayImageView.rightAnchor),
+            contentView.bottomAnchor.constraint(equalTo: overlayImageView.bottomAnchor)
+            ])
+        layoutIfNeeded()
     }
+    
+    func setup(number: Int?){
+        if(number != nil){
+            self.addOverlay(true)
+        }else{
+            self.removeOverlay(true)
+        }
+    }
+    
 }

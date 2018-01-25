@@ -90,7 +90,7 @@ open class OpalImagePickerCollectionViewLayout: UICollectionViewLayout {
     
     fileprivate func updateItemSizes() {
         guard let collectionView = self.collectionView else { return }
-        let numberOfItemsAcross = Int(collectionView.bounds.width/estimatedImageSize)
+        let numberOfItemsAcross = 3
         
         guard numberOfItemsAcross > 0 else { return }
         let widthOfItem = collectionView.bounds.width/CGFloat(numberOfItemsAcross)
