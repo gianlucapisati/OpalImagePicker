@@ -349,27 +349,20 @@ extension OpalImagePickerRootViewController: UICollectionViewDelegate {
     ///   - collectionView: the `UICollectionView`
     ///   - indexPath: the `IndexPath`
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell,
-            let image = cell.imageView?.image else { return }
-        set(image: image, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
-        let index = selectedIndexes.index(of: indexPath)
-        cell.setup(index: index)
-    }
-    
-    
-    /// Collection View did de-select item at `IndexPath`
-    ///
-    /// - Parameters:
-    ///   - collectionView: the `UICollectionView`
-    ///   - indexPath: the `IndexPath`
-    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell else {return}
-        set(image: nil, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
-        let index = selectedIndexes.index(of: indexPath)
-        cell.setup(index: index)
-        
+        if selectedIndexes.index(of: indexPath) == nil {
+            guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell,
+                let image = cell.imageView?.image else { return }
+            set(image: image, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
+            let index = selectedIndexes.index(of: indexPath)
+            cell.setup(index: index)
+        } else {
+            guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell else {return}
+            set(image: nil, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
+            let index = selectedIndexes.index(of: indexPath)
+            cell.setup(index: index)
+            
+        }
         collectionView.reloadData()
-        
     }
 }
 
