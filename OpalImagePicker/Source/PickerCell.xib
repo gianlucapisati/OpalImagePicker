@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HPk-3p-c27">
-                        <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
+                        <rect key="frame" x="1" y="1" width="123" height="123"/>
                     </imageView>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Vf4-kw-j7G">
                         <rect key="frame" x="52" y="52" width="20" height="20"/>
@@ -45,17 +45,17 @@
                     </label>
                 </subviews>
             </view>
-            <color key="backgroundColor" red="0.40784313729999999" green="0.48627450979999998" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="TEw-3u-G31" secondAttribute="bottom" constant="5" id="5ni-h2-wpq"/>
                 <constraint firstAttribute="trailing" secondItem="vVv-5Q-d1n" secondAttribute="trailing" constant="5" id="7cQ-vu-UIf"/>
-                <constraint firstAttribute="bottom" secondItem="HPk-3p-c27" secondAttribute="bottom" id="EMN-hl-VFM"/>
                 <constraint firstItem="Vf4-kw-j7G" firstAttribute="centerX" secondItem="kUa-7e-edF" secondAttribute="centerX" id="L7i-Nd-lNL"/>
-                <constraint firstItem="HPk-3p-c27" firstAttribute="leading" secondItem="kUa-7e-edF" secondAttribute="leading" id="Nn7-Wp-cp3"/>
                 <constraint firstAttribute="trailing" secondItem="TEw-3u-G31" secondAttribute="trailing" constant="5" id="Rl8-XP-shW"/>
+                <constraint firstItem="HPk-3p-c27" firstAttribute="top" secondItem="kUa-7e-edF" secondAttribute="top" constant="1" id="Xue-uU-WCU"/>
                 <constraint firstAttribute="bottom" secondItem="vVv-5Q-d1n" secondAttribute="bottom" constant="5" id="btG-UA-fRc"/>
-                <constraint firstAttribute="trailing" secondItem="HPk-3p-c27" secondAttribute="trailing" id="h2z-Uo-piU"/>
-                <constraint firstItem="HPk-3p-c27" firstAttribute="top" secondItem="kUa-7e-edF" secondAttribute="top" id="j2c-tO-uXl"/>
+                <constraint firstAttribute="bottom" secondItem="HPk-3p-c27" secondAttribute="bottom" constant="1" id="mnr-nh-xRI"/>
+                <constraint firstAttribute="trailing" secondItem="HPk-3p-c27" secondAttribute="trailing" constant="1" id="nvE-Iu-S55"/>
+                <constraint firstItem="HPk-3p-c27" firstAttribute="leading" secondItem="kUa-7e-edF" secondAttribute="leading" constant="1" id="pYK-CF-dkK"/>
                 <constraint firstItem="Vf4-kw-j7G" firstAttribute="centerY" secondItem="kUa-7e-edF" secondAttribute="centerY" id="rxL-oa-dWx"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="AtK-pu-1VB"/>
@@ -65,10 +65,10 @@
                 <outlet property="numberLabel" destination="vVv-5Q-d1n" id="Pfm-98-ySa"/>
                 <outlet property="overlayImageView" destination="TEw-3u-G31" id="nqI-vd-i06"/>
             </connections>
-            <point key="canvasLocation" x="17" y="181"/>
+            <point key="canvasLocation" x="-197" y="168"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="circle-empty" width="128" height="128"/>
+        <image name="circle-empty" width="26" height="27"/>
     </resources>
 </document>

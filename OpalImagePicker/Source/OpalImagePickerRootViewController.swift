@@ -142,45 +142,35 @@ open class OpalImagePickerRootViewController: UIViewController {
     }
     
     fileprivate func setup() {
+        let layout = UICollectionViewFlowLayout.init()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 1
         if self.pickerMode == .select {
             fetchPhotos()
-            let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: OpalImagePickerCollectionViewLayout())
+            let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
             setup(collectionView: collectionView)
             view.addSubview(collectionView)
-            
             self.collectionView = collectionView
             var constraints: [NSLayoutConstraint] = []
-            constraints += [view.topAnchor.constraint(equalTo: (collectionView.topAnchor))]
-            constraints += [view.rightAnchor.constraint(equalTo: (collectionView.rightAnchor))]
+            constraints += [view.topAnchor.constraint(equalTo: collectionView.topAnchor, constant: 0)]
+            constraints += [view.rightAnchor.constraint(equalTo: collectionView.rightAnchor, constant: 0)]
+            constraints += [view.leftAnchor.constraint(equalTo: collectionView.leftAnchor, constant: 0)]
+            constraints += [view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0)]
             
-            //Lower priority to override left constraint for animations
-            let leftCollectionViewConstraint = view.leftAnchor.constraint(equalTo: (collectionView.leftAnchor))
-            leftCollectionViewConstraint.priority = 999
-            constraints += [leftCollectionViewConstraint]
-            
-            constraints += [view.bottomAnchor.constraint(equalTo: (collectionView.bottomAnchor))]
             NSLayoutConstraint.activate(constraints)
         }else{
-            let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: OpalImagePickerCollectionViewLayout())
+            let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
             setup(collectionView: collectionView)
             view.addSubview(collectionView)
-            
             self.externalCollectionView = collectionView
             var constraints: [NSLayoutConstraint] = []
-            constraints += [view.topAnchor.constraint(equalTo: (externalCollectionView?.topAnchor)!)]
-            constraints += [view.rightAnchor.constraint(equalTo: (externalCollectionView?.rightAnchor)!)]
+            constraints += [view.topAnchor.constraint(equalTo: collectionView.topAnchor, constant: 0)]
+            constraints += [view.rightAnchor.constraint(equalTo: collectionView.rightAnchor, constant: 0)]
+            constraints += [view.leftAnchor.constraint(equalTo: collectionView.leftAnchor, constant: 0)]
+            constraints += [view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0)]
             
-            //Lower priority to override left constraint for animations
-            let leftCollectionViewConstraint = view.leftAnchor.constraint(equalTo: (externalCollectionView?.leftAnchor)!)
-            leftCollectionViewConstraint.priority = 999
-            constraints += [leftCollectionViewConstraint]
-            
-            constraints += [view.bottomAnchor.constraint(equalTo: (externalCollectionView?.bottomAnchor)!)]
             NSLayoutConstraint.activate(constraints)
         }
-        
-        
-        
         
         view.layoutIfNeeded()
     }
@@ -191,6 +181,9 @@ open class OpalImagePickerRootViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.isScrollEnabled = true
+        collectionView.backgroundColor = UIColor.init(red: 94/255, green: 94/255, blue: 94/255, alpha: 1)
+        collectionView.contentInset = UIEdgeInsetsMake(2, 2, 2, 2)
         collectionView.register(UINib(nibName: "PickerCell", bundle: nil), forCellWithReuseIdentifier: "PickerCell")
     }
 
@@ -234,7 +227,7 @@ open class OpalImagePickerRootViewController: UIViewController {
         super.viewDidLoad()        
         setup()
         
-        navigationItem.title = configuration?.navigationTitle ?? NSLocalizedString("Photos", comment: "")
+        navigationItem.title = self.configuration?.navigationTitle ?? NSLocalizedString("Photos", comment: "")
         
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
         navigationItem.leftBarButtonItem = cancelButton
@@ -411,12 +404,6 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
         return cell
     }
     
-    /// Returns the number of items in a given section
-    ///
-    /// - Parameters:
-    ///   - collectionView: the `UICollectionView`
-    ///   - section: the given section of the `UICollectionView`
-    /// - Returns: Returns an `Int` for the number of rows.
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.collectionView {
             return photoAssets.count
@@ -429,5 +416,12 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
             assertionFailure("You need to implement `imagePickerNumberOfExternalItems(_:)` in your delegate.")
             return 0
         }
+    }
+}
+
+extension OpalImagePickerRootViewController: UICollectionViewDelegateFlowLayout{
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let side = (collectionView.bounds.size.width/3)-2
+        return CGSize.init(width: side, height: side)
     }
 }

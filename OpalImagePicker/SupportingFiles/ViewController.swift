@@ -27,6 +27,15 @@ class ViewController: UIViewController {
         urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
         urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
         urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
+        urls.append(URL.init(string: "https://thumbs.dreamstime.com/b/infinito-del-segno-34338284.jpg")!)
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,7 +47,11 @@ class ViewController: UIViewController {
         let imagePicker = OpalImagePickerController()
         imagePicker.imagePickerDelegate = self
         imagePicker.pickerMode = .reorder
-        imagePicker.selectionImage = UIImage(named:"checkmark")
+        imagePicker.maximumSelectionsAllowed = 10
+        let configuration = OpalImagePickerConfiguration()
+        configuration.navigationTitle = NSLocalizedString("Pippo", comment: "")
+        configuration.maximumSelectionsAllowedMessage = NSLocalizedString("You cannot select that many images!", comment: "")
+        imagePicker.configuration = configuration
         self.present(imagePicker, animated: true, completion: nil)
     }
 }
