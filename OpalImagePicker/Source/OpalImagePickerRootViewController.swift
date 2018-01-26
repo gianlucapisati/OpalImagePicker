@@ -384,15 +384,14 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
         fetchNextPageIfNeeded(indexPath: indexPath)
         
         guard let layoutAttributes = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath),
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImagePickerCollectionViewCell.reuseId, for: indexPath) as? ImagePickerCollectionViewCell else { return UICollectionViewCell() }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PickerCell", for: indexPath) as? PickerCell else { return UICollectionViewCell() }
         let photoAsset = photoAssets.object(at: indexPath.item)
         let index = selectedIndexes.index(of: indexPath)
+        cell.indexPath = indexPath
         cell.photoAsset = photoAsset
         cell.size = layoutAttributes.frame.size
-        let number = index != nil ? index!+1 : nil
-        cell.number = number
-        cell.setup(number: number)
-        
+        cell.cache = cache
+        cell.setup(index: index)
         
         return cell
     }
