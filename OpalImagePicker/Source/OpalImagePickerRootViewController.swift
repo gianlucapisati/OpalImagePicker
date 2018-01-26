@@ -353,14 +353,8 @@ extension OpalImagePickerRootViewController: UICollectionViewDelegate {
             guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell,
                 let image = cell.imageView?.image else { return }
             set(image: image, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
-            let index = selectedIndexes.index(of: indexPath)
-            cell.setup(index: index)
         } else {
-            guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell else {return}
             set(image: nil, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
-            let index = selectedIndexes.index(of: indexPath)
-            cell.setup(index: index)
-            
         }
         collectionView.reloadData()
     }
@@ -408,18 +402,13 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PickerCell", for: indexPath) as? PickerCell else { return UICollectionViewCell() }
         if let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) {
             let index = selectedIndexes.index(of: indexPath)
-            if(cell.url == nil){
-                cell.url = url
-            }
-            if(cell.indexPath == nil){
-                cell.indexPath = indexPath
-            }
+            cell.cache = cache
+            cell.indexPath = indexPath
+            cell.url = url
             cell.setup(index: index)
-        }
-        else {
+        } else {
             assertionFailure("You need to implement `imagePicker(_:imageURLForExternalItemAtIndex:)` in your delegate.")
         }
-        
         return cell
     }
     

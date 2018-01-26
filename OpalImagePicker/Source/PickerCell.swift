@@ -21,11 +21,7 @@ class PickerCell: UICollectionViewCell {
         }
     }
     
-    var indexPath: IndexPath? {
-        didSet {
-            loadURLIfNeeded()
-        }
-    }
+    var indexPath: IndexPath?
     
     func setup(index: Int?){
         if(index != nil){
@@ -39,6 +35,10 @@ class PickerCell: UICollectionViewCell {
     fileprivate var urlDataTask: URLSessionTask?
     var cache: NSCache<NSIndexPath, NSData>?
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView?.image = nil
+    }
     
     fileprivate func loadURLIfNeeded() {
         guard let url = self.url,
