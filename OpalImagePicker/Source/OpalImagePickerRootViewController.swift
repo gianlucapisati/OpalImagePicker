@@ -184,7 +184,8 @@ open class OpalImagePickerRootViewController: UIViewController {
         collectionView.isScrollEnabled = true
         collectionView.backgroundColor = UIColor.init(red: 94/255, green: 94/255, blue: 94/255, alpha: 1)
         collectionView.contentInset = UIEdgeInsetsMake(2, 2, 2, 2)
-        collectionView.register(UINib(nibName: "PickerCell", bundle: nil), forCellWithReuseIdentifier: "PickerCell")
+        let bundle = Bundle(for: PickerCell.self)
+        collectionView.register(UINib(nibName: "PickerCell", bundle: bundle), forCellWithReuseIdentifier: "PickerCell")
     }
 
     
