@@ -52,10 +52,12 @@ class PickerCell: UICollectionViewCell {
     func setup(index: Int?){
         if(index != nil){
             numberLabel.text = "\(index!+1)"
-            overlayImageView.image = UIImage(named:"circle-full")
+            let bundle = Bundle(for: PickerCell.self)
+            overlayImageView.image = UIImage(named: "circle-full", in: bundle, compatibleWith: nil)
         }else{
             numberLabel.text = ""
-            overlayImageView.image = UIImage(named:"circle-empty")
+            let bundle = Bundle(for: PickerCell.self)
+            overlayImageView.image = UIImage(named: "circle-empty", in: bundle, compatibleWith: nil)
         }
     }
     

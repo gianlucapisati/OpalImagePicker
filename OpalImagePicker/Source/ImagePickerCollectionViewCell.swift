@@ -84,7 +84,8 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         
         let overlayImageView = UIImageView(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
         overlayImageView.translatesAutoresizingMaskIntoConstraints = false
-        overlayImageView.image = UIImage(named: "circle-empty")
+        let bundle = Bundle(for: ImagePickerCollectionViewCell.self)
+        overlayImageView.image = UIImage(named: "circle-empty", in: bundle, compatibleWith: nil)
         contentView.addSubview(overlayImageView)
         self.overlayImageView = overlayImageView
         
@@ -206,7 +207,8 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
 
         let overlayImageView = UIImageView(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
         overlayImageView.translatesAutoresizingMaskIntoConstraints = false
-        overlayImageView.image = UIImage(named: "circle-full")
+        let bundle = Bundle(for: PickerCell.self)
+        overlayImageView.image = UIImage(named: "circle-full", in: bundle, compatibleWith: nil)
         contentView.addSubview(overlayImageView)
         self.overlayImageView = overlayImageView
         
@@ -250,7 +252,8 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         
         let overlayImageView = UIImageView(frame: CGRect.init(x: frame.origin.x, y: frame.origin.y, width: 30, height: 30))
         overlayImageView.translatesAutoresizingMaskIntoConstraints = false
-        overlayImageView.image = UIImage(named: "circle-empty")
+        let bundle = Bundle(for: ImagePickerCollectionViewCell.self)
+        overlayImageView.image = UIImage(named: "circle-empty", in: bundle, compatibleWith: nil)
         contentView.addSubview(overlayImageView)
         self.overlayImageView = overlayImageView
         
