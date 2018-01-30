@@ -249,26 +249,11 @@ open class OpalImagePickerRootViewController: UIViewController {
     func doneTapped() {
         guard let imagePicker = navigationController as? OpalImagePickerController else { return }
         
-        let indexPathsForSelectedItems = collectionView?.indexPathsForSelectedItems ?? []
-        let externalIndexPaths = externalCollectionView?.indexPathsForSelectedItems ?? []
-        guard indexPathsForSelectedItems.count + externalIndexPaths.count > 0 else {
+        guard selectedIndexes.count > 0 else {
             cancelTapped()
             return
         }
         
-        var photoAssets: [PHAsset] = []
-        for indexPath in indexPathsForSelectedItems {
-            guard indexPath.item < self.photoAssets.count else { continue }
-            photoAssets += [self.photoAssets.object(at: indexPath.item)]
-        }
-        delegate?.imagePicker?(imagePicker, didFinishPickingAssets: photoAssets)
-        
-        var selectedURLs: [URL] = []
-        for indexPath in externalIndexPaths {
-            guard let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) else { continue }
-            selectedURLs += [url]
-        }
-        delegate?.imagePicker?(imagePicker, didFinishPickingExternalURLs: selectedURLs)
         
         var imagesArray:[UIImage] = []
         for indexPath in selectedIndexes {
@@ -350,6 +335,7 @@ extension OpalImagePickerRootViewController: UICollectionViewDelegate {
         } else {
             set(image: nil, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
         }
+        
         collectionView.reloadData()
     }
     
