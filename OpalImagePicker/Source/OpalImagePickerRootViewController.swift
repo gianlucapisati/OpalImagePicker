@@ -254,13 +254,14 @@ open class OpalImagePickerRootViewController: UIViewController {
             return
         }
         
-        
         var imagesArray:[UIImage] = []
         for indexPath in selectedIndexes {
             imagesArray.append(imagesDict[indexPath]!)
         }
         
         delegate?.imagePicker?(imagePicker, didFinishPickingImages: imagesArray)
+        
+        dismiss(animated: true, completion: nil)
     }
     
     fileprivate func set(image: UIImage?, indexPath: IndexPath, isExternal: Bool) {
