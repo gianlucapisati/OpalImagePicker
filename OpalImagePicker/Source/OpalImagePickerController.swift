@@ -67,6 +67,10 @@ public enum ModalityType{
     ///   - picker: the `OpalImagePickerController`
     ///   - urls: the array of `URL`
     @objc optional func imagePicker(_ picker: OpalImagePickerController, didFinishPickingExternalURLs urls: [URL])
+    
+    @objc optional func imagePicker(_ picker: OpalImagePickerController, didFinishReorderingExternalImages images: [String])
+    
+    @objc optional func imagePicker(_ picker: OpalImagePickerController, didFinishRemovingExternalImages images: [String])
 }
 
 /// Image Picker Controller. Displays images from the Photo Library. Must check Photo Library permissions before attempting to display this controller.

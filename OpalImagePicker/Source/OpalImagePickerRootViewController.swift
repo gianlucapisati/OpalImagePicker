@@ -254,12 +254,37 @@ open class OpalImagePickerRootViewController: UIViewController {
             return
         }
         
-        var imagesArray:[UIImage] = []
+        var photoAssets: [PHAsset] = []
         for indexPath in selectedIndexes {
-            imagesArray.append(imagesDict[indexPath]!)
+            guard indexPath.item < self.photoAssets.count else { continue }
+            photoAssets += [self.photoAssets.object(at: indexPath.item)]
         }
+        delegate?.imagePicker?(imagePicker, didFinishPickingAssets: photoAssets)
         
-        delegate?.imagePicker?(imagePicker, didFinishPickingImages: imagesArray)
+        if pickerMode == .reorder {
+            var selectedFilenames: [String] = []
+            for indexPath in selectedIndexes {
+                guard let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) else { continue }
+                selectedFilenames += [url.lastPathComponent]
+            }
+            delegate?.imagePicker?(imagePicker, didFinishReorderingExternalImages: selectedFilenames)
+        }
+        else if pickerMode == .delete {
+            var selectedFilenames: [String] = []
+            for indexPath in selectedIndexes {
+                guard let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) else { continue }
+                selectedFilenames += [url.lastPathComponent]
+            }
+            delegate?.imagePicker?(imagePicker, didFinishReorderingExternalImages: selectedFilenames)
+        }
+        else if pickerMode == .select {
+            var imagesArray:[UIImage] = []
+            for indexPath in selectedIndexes {
+                imagesArray.append(imagesDict[indexPath]!)
+            }
+        
+            delegate?.imagePicker?(imagePicker, didFinishPickingImages: imagesArray)
+        }
         
         dismiss(animated: true, completion: nil)
     }
