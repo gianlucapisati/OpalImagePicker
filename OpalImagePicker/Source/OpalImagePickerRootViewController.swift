@@ -275,7 +275,7 @@ open class OpalImagePickerRootViewController: UIViewController {
                 guard let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) else { continue }
                 selectedFilenames += [url.lastPathComponent]
             }
-            delegate?.imagePicker?(imagePicker, didFinishReorderingExternalImages: selectedFilenames)
+            delegate?.imagePicker?(imagePicker, didFinishRemovingExternalImages: selectedFilenames)
         }
         else if pickerMode == .select {
             var imagesArray:[UIImage] = []
