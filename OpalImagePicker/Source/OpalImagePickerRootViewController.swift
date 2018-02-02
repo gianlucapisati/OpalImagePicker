@@ -267,7 +267,16 @@ open class OpalImagePickerRootViewController: UIViewController {
                 guard let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) else { continue }
                 selectedFilenames += [url.lastPathComponent]
             }
-            delegate?.imagePicker?(imagePicker, didFinishReorderingExternalImages: selectedFilenames)
+            
+            if selectedIndexes.count < delegate?.imagePickerNumberOfExternalItems?(imagePicker) ?? 0 {
+                let alert = UIAlertController(title: "Warning", message: "You have to select all images when reordering.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+            else {
+                delegate?.imagePicker?(imagePicker, didFinishReorderingExternalImages: selectedFilenames)
+            }
         }
         else if pickerMode == .delete {
             var selectedFilenames: [String] = []
