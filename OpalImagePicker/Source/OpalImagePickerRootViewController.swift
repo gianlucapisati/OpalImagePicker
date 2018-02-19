@@ -145,7 +145,7 @@ open class OpalImagePickerRootViewController: UIViewController {
         let layout = UICollectionViewFlowLayout.init()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 1
-        if self.pickerMode == .select {
+        if self.pickerMode == .select || self.pickerMode == .unique {
             fetchPhotos()
             let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
             setup(collectionView: collectionView)
@@ -158,7 +158,8 @@ open class OpalImagePickerRootViewController: UIViewController {
             constraints += [view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0)]
             
             NSLayoutConstraint.activate(constraints)
-        }else{
+        }
+        else {
             let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
             setup(collectionView: collectionView)
             view.addSubview(collectionView)
@@ -409,7 +410,7 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
     ///   - indexPath: the `IndexPath`
     /// - Returns: Returns the `UICollectionViewCell`
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if(self.pickerMode == .select) {
+        if(self.pickerMode == .select || self.pickerMode == .unique) {
             return photoAssetCollectionView(collectionView, cellForItemAt: indexPath)
         }
         else {

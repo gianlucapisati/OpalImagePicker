@@ -11,6 +11,7 @@ import Photos
 
 public enum ModalityType{
     case select
+    case unique
     case reorder
     case delete
 }
