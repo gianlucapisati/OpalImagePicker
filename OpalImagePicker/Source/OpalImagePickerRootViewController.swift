@@ -240,14 +240,14 @@ open class OpalImagePickerRootViewController: UIViewController {
         self.doneButton = doneButton
     }
     
-    func cancelTapped() {
+    @objc func cancelTapped() {
         dismiss(animated: true) { [weak self] in
             guard let imagePicker = self?.navigationController as? OpalImagePickerController else { return }
             self?.delegate?.imagePickerDidCancel?(imagePicker)
         }
     }
     
-    func doneTapped() {
+    @objc func doneTapped() {
         guard let imagePicker = navigationController as? OpalImagePickerController else { return }
         
         guard selectedIndexes.count > 0 else {
