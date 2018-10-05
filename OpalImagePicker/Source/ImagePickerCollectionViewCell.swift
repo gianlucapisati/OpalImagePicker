@@ -69,7 +69,7 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .lightGray
         
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.hidesWhenStopped = true
         contentView.addSubview(activityIndicator)

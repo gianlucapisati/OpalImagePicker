@@ -134,7 +134,7 @@ class PickerCell: UICollectionViewCell {
                 self?.imageView?.image = nil
                 return
             }
-            let data = UIImagePNGRepresentation(result)
+            let data = result.pngData()
             self?.cache?.setObject(data! as NSData,
                                    forKey: indexPath as NSIndexPath,
                                    cost: data!.count)

@@ -184,7 +184,7 @@ open class OpalImagePickerRootViewController: UIViewController {
         collectionView.delegate = self
         collectionView.isScrollEnabled = true
         collectionView.backgroundColor = UIColor.init(red: 94/255, green: 94/255, blue: 94/255, alpha: 1)
-        collectionView.contentInset = UIEdgeInsetsMake(2, 2, 2, 2)
+        collectionView.contentInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         let bundle = Bundle(for: PickerCell.self)
         collectionView.register(UINib(nibName: "PickerCell", bundle: bundle), forCellWithReuseIdentifier: "PickerCell")
     }
@@ -270,8 +270,8 @@ open class OpalImagePickerRootViewController: UIViewController {
             }
             
             if selectedIndexes.count < delegate?.imagePickerNumberOfExternalItems?(imagePicker) ?? 0 {
-                let alert = UIAlertController(title: "Warning", message: "You have to select all images when reordering.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                let alert = UIAlertController(title: "Warning", message: "You have to select all images when reordering.", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 return
             }
