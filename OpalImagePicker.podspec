@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/opalorange/OpalImagePicker.git", :tag => s.version }
   s.source_files  = "OpalImagePicker/Source/*.swift"
   s.resources = ["OpalImagePicker/Source/*.{xib}", "OpalImagePicker/SupportingFiles/*.xcassets"]
-  s.pod_target_xcconfig =  { 'SWIFT_VERSION' => '3.0' }
+  s.pod_target_xcconfig =  { 'SWIFT_VERSION' => '4.2' }
 end
