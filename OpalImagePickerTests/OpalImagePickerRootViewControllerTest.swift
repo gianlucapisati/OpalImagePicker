@@ -34,12 +34,6 @@ class OpalImagePickerRootViewControllerTest: XCTestCase {
         XCTAssert(imagePicker.selectionImage === image)
     }
     
-    func testGetCollectionViewLayout() {
-        let imagePicker = OpalImagePickerRootViewController()
-        imagePicker.loadViewIfNeeded()
-        XCTAssertNotNil(imagePicker.collectionViewLayout)
-    }
-    
     func testGetFetchOptions() {
         let imagePicker = OpalImagePickerRootViewController()
         imagePicker.loadViewIfNeeded()
@@ -66,15 +60,6 @@ class OpalImagePickerRootViewControllerTest: XCTestCase {
     func testInit() {
         let imagePicker = OpalImagePickerRootViewController()
         XCTAssertNotNil(imagePicker)
-    }
-    
-    func testSetup() {
-        let imagePicker = OpalImagePickerRootViewController()
-        imagePicker.loadViewIfNeeded()
-        
-        XCTAssertNotNil(imagePicker.collectionView)
-        XCTAssertNotNil(imagePicker.collectionViewLayout)
-        XCTAssertEqual(imagePicker.fetchLimit, imagePicker.pageSize)
     }
     
     func testDoneTapped() {

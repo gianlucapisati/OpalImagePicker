@@ -86,7 +86,7 @@ open class OpalImagePickerRootViewController: UIViewController {
     open var maximumSelectionsAllowed: Int = -1
     
     /// Page size for paging through the Photo Assets in the Photo Library. Defaults to 100. Must override to change this value.
-    open let pageSize = 100
+    public let pageSize = 100
     
     var photoAssets: PHFetchResult<PHAsset> = PHFetchResult()
     weak var doneButton: UIBarButtonItem?
@@ -364,7 +364,7 @@ extension OpalImagePickerRootViewController: UICollectionViewDelegate {
     ///   - collectionView: the `UICollectionView`
     ///   - indexPath: the `IndexPath`
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if selectedIndexes.index(of: indexPath) == nil {
+        if selectedIndexes.firstIndex(of: indexPath) == nil {
             guard let cell = collectionView.cellForItem(at: indexPath) as? PickerCell,
                 let image = cell.imageView?.image else { return }
             set(image: image, indexPath: indexPath, isExternal: collectionView == self.externalCollectionView)
@@ -380,7 +380,7 @@ extension OpalImagePickerRootViewController: UICollectionViewDelegate {
             cell.imageView?.image != nil else { return false }
         guard maximumSelectionsAllowed > 0 else { return true }
         
-        if(selectedIndexes.index(of: indexPath) != nil){
+        if(selectedIndexes.firstIndex(of: indexPath) != nil){
             return true
         }else{
             if maximumSelectionsAllowed <= selectedIndexes.count {
@@ -424,7 +424,7 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
         guard let layoutAttributes = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath),
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PickerCell", for: indexPath) as? PickerCell else { return UICollectionViewCell() }
         let photoAsset = photoAssets.object(at: indexPath.item)
-        let index = selectedIndexes.index(of: indexPath)
+        let index = selectedIndexes.firstIndex(of: indexPath)
         cell.indexPath = indexPath
         cell.photoAsset = photoAsset
         cell.size = layoutAttributes.frame.size
@@ -438,7 +438,7 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
         guard let imagePicker = navigationController as? OpalImagePickerController,
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PickerCell", for: indexPath) as? PickerCell else { return UICollectionViewCell() }
         if let url = delegate?.imagePicker?(imagePicker, imageURLforExternalItemAtIndex: indexPath.item) {
-            let index = selectedIndexes.index(of: indexPath)
+            let index = selectedIndexes.firstIndex(of: indexPath)
             cell.cache = cache
             cell.indexPath = indexPath
             cell.url = url
@@ -458,7 +458,6 @@ extension OpalImagePickerRootViewController: UICollectionViewDataSource {
             return numberOfItems
         }
         else {
-            assertionFailure("You need to implement `imagePickerNumberOfExternalItems(_:)` in your delegate.")
             return 0
         }
     }
